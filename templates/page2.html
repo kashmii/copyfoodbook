@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang=en-JP>
+    <head>
+        <meta charset="utf-8">
+        <title>page2</title>
+        <meta name="discription" content="ページの概要をここに記入（SEO対策）">
+        <meta name="viewport" content="width=device-width"><!-- レスポンシブスマホ対応-->
+        <style>/*CSS挿入*/
+        *{margin:30;padding:0;}/*デフォルトでついている間隔を０にしてデザインしやすく*/
+        </style>
+    </head>
+    <body>
+        <h1>こちらでよろしいでしょうか？</h1>
+        <p>{{ rst_info[0]['title'] }}</p>
+        <p>{{ rst_info[0]['detail'] }}</p>
+        <!-- <p>{{ rst_info[0]['url'] }}</p> -->
+
+        <a href='/templates/goal'>
+            <button>ＯＫ</button>
+        </a>
+        <!-- <button formaction="/templates/goal" formmethod="get">ＯＫ</button> -->
+        <a href='/templates/page3'><button>次の結果</button></a>
+        <a href='/'><button>はじめに戻る</button></a>
+        <br>
+        
+    </body>
+</html>
