@@ -1,1 +1,1 @@
-web: gunicorn <food_book135>:app --log-file=-
+web: gunicorn google_search : app --log-file -
