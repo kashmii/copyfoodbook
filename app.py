@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from logging import shutdown
 from bs4 import BeautifulSoup
 import re
 from flask import Flask, render_template, request, session
@@ -150,7 +149,7 @@ def goal():
     #↓OKが出た店の食べログURLでスクレイピング
     url_t = searched_list[0]['url']
     r = requests.get(url_t)
-    soup = BeautifulSoup(r.text)
+    soup = BeautifulSoup(r.text, 'html.parser')
     name_rst = soup.find('div', class_='rstinfo-table__name-wrap').text
     station_rst = soup.find('span', class_='linktree__parent-target-text').text
     tel_rst = soup.find('p', class_='rstdtl-side-yoyaku__tel-number').text
