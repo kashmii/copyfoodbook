@@ -1,1 +1,0 @@
-web: gunicorn <food_book>:app --log-file=-
