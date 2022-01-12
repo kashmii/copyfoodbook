@@ -20,7 +20,7 @@ app = Flask(__name__)
 # カスタム検索エンジンID
 CUSTOM_SEARCH_ENGINE_ID = "87dabc623cf5e8624"
 # API キー
-API_KEY = "AIzaSyBQN-iwelbXSw10cHPGMN5Tny78wCud2ro"
+API_KEY = ""
 
 # APIにアクセスして結果をもらってくるメソッド
 def get_search_results(query):
