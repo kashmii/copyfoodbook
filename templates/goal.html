@@ -35,7 +35,6 @@
             食べログ：{{searched_list[0]['url']}}</p>
         </div>
 
-
         <button id="copy-btn" class='box_page23'>Copy text</button>
         <a href='/'><button class='box_page23'>はじめに戻る</button></a>
         </div>
@@ -47,7 +46,7 @@
             document.querySelector('#copy-btn').addEventListener(`click`, function () {
 	            navigator.clipboard.writeText(copy_text).then(function () {
 		            // コピーに成功した場合の処理
-		            document.querySelector('#opuput').textContent = 'copied it to the clipboard';
+		            document.querySelector('#output').textContent = 'copied it to the clipboard';
 	                });
             });
         </script>
