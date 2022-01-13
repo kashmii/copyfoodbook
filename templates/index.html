@@ -1,22 +1,27 @@
 <!DOCTYPE HTML>
 <html lang=en-JP>
-    <head><!-- ヘッド -->
-        <meta charset="utf-8"><!-- 文字コード -->
-        <title>index</title><!-- タイトル -->
-        <!-- <meta name="discription" content="ページの概要をここに記入（SEO対策）"> -->
-        <meta name="viewport" content="width=device-width"><!-- レスポンシブスマホ対応-->
-        <style>/*CSS挿入*/
-        *{margin:30;padding:0;}/*デフォルトでついている間隔を０にしてデザインしやすく*/
-        </style>
-    </head>
-    <body><!-- ボディ -->
-        <h1>レストランの情報をメモ帳に残しましょう</h1>
-        <p>お店の名前と都道府県名を選ぶだけで、<br>食べログのページやGoogleMapsのURL、電話番号を保存できます！</p>
+    <head>
+        <meta charset="utf-8">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" \
+        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" \
+        crossorigin="anonymous">
 
-        <form action="/templates/page2" method="post" enctype="multipart/form-data">
-            <input type="text" id='hoge' name="name" placeholder="レストランの名前"></input>
-            <select name="prefectures">
-                <option value="" selected>お店のある都道府県</option>
+        <link rel="stylesheet" type="text/css" \
+            href="{{ url_for('static',filename='css/index.css') }}">
+        <title>index</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- レスポンシブスマホ対応-->
+    </head>
+    <body>
+    <div class='container, outside'>
+        <h1 id='title'>Copy Restaurant</h1>
+
+        <div class=form_box>
+            <form action="/templates/page2" class=row method="post" enctype="multipart/form-data">
+                <input class='col-4, box' type="text" id='hoge' name="name" placeholder="レストランの名前"></input>
+                <select class='col-4, box' name="prefectures">
+                <option value="" selected>お店の都道府県</option>
                 <option value="北海道">北海道</option>
                 <option value="青森県">青森県</option>
                 <option value="岩手県">岩手県</option>
@@ -64,14 +69,19 @@
                 <option value="宮崎県">宮崎県</option>
                 <option value="鹿児島県">鹿児島県</option>
                 <option value="沖縄県">沖縄県</option>
-            </select>
-            <input type="submit" name="submit" value="送信">
-        </form>
+                </select>
+                <input class='col-4, box, s-button' type="submit" name="submit" value="送信">
+            </form>
+        </div>
+        <div class='explain_box'>
+            <p id='explain'>飲食店の名前と都道府県名を選ぶだけで、<br>食べログのページやGoogleMapsのURL、電話番号を表示します！</p>
+        </div>
+    </div>
 
-        <form action="/templates/page2" method="get">
-            <button>このサイトの使い方</button>
-        </form>
-        
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" \
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     </body>
 
 </html>

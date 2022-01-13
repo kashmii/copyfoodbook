@@ -1,33 +1,28 @@
 # -*- coding: utf-8 -*-
-from logging import shutdown
 from bs4 import BeautifulSoup
 import re
 from flask import Flask, render_template, request, session
 import requests
-import pprint
-import json
+import settings
 from requests.exceptions import Timeout
 # 返却された検索結果の読み取りにつかう
-from googleapiclient.discovery import build # APIへのアクセスにつかう
-# import session
+from googleapiclient.discovery import build
 
 # =================================
 # =================================
 app = Flask(__name__)
-
 
 # =================================
 # =================================
 # カスタム検索エンジンID
 CUSTOM_SEARCH_ENGINE_ID = "87dabc623cf5e8624"
 # API キー
-API_KEY = "AIzaSyBQN-iwelbXSw10cHPGMN5Tny78wCud2ro"
+API_KEY = settings.AP
 
 # APIにアクセスして結果をもらってくるメソッド
 def get_search_results(query):
     
     # APIでやりとりするためのリソースを構築
-    # 詳細: https://googleapis.github.io/google-api-python-client/docs/epy/googleapiclient.discovery-pysrc.html#build
     search = build(
         "customsearch", 
         "v1", 
@@ -35,7 +30,6 @@ def get_search_results(query):
     )
     
     # Google Custom Search から結果を取得
-    # 詳細: https://developers.google.com/custom-search/v1/reference/rest/v1/cse/list
     result = search.cse().list(
         q = query,
         cx = CUSTOM_SEARCH_ENGINE_ID,
@@ -43,7 +37,6 @@ def get_search_results(query):
         num = 5,
         start = 1
     ).execute()
-    # print("{}".format(json.dumps(result,indent=4)))
 
     # 受け取ったjsonをそのまま返却
     return result
@@ -85,29 +78,25 @@ class SearchResult:
         # コマンドライン上での表示形式はご自由にどうぞ
         return "[title] " + self.title + "\n\t[detail] " + self.snippet + "\n\t[url]" + self.url
 
-    # def show_url(self):
-    #     print(self.url)
-
     def Making_d(self):
         d_info = dict(title=self.title, url=self.url, detail=self.snippet)
         return d_info
 
 # htmlとやり取りするパート
-
 app = Flask(__name__)
 
 app.secret_key = 'abcdefghijklmn'
 
 @app.route('/', methods=['GET'])
 def get():
-    # messagebox.showinfo('タイトル', 'メッセージ内容')
     return render_template('index.html')
 
-# イエス・ノー聞くページ *page2*
-@app.route('/templates/page2', methods=["get"])
+# 今は未使用
+@app.route('/templates/fail', methods=["get"])
 def page2():
-    return render_template('page2.html')
+    return render_template('fail.html')
 
+# フォームを読み込んで検索結果を出す ＝page2
 @app.route('/templates/page2', methods=['POST'])
 def post():
     name = request.form.get('name')
@@ -117,7 +106,7 @@ def post():
     query3 = '"食べログ"'
     the_word = query + " " + query2 + " " + query3
 
-        # APIから検索結果を取得
+    # APIから検索結果を取得
     result = get_search_results(the_word)
     # result には 返却されたjsonが入る
 
@@ -128,21 +117,22 @@ def post():
     # 他のページへ渡せるようにsessionを使う
     session['result_items_list'] = result_items_list
 
-    
-    # コマンドラインに検索結果の情報を出力
-    # 1個分だけ表示
+    # コマンドラインに検索結果の情報を1個分だけ表示
     print(result_items_list[0])
-    
-    print()
-    print(query2)
+    # print(query2)
+    # 第2引数で、htmlファイル上の変数にここで用いたリストを代入している
     return render_template('page2.html', rst_info=result_items_list)
 
+# 1つ目の情報が誤っていたときに2つ目の検索結果を表示する＝page3
 @app.route('/templates/page3', methods=["get"])
 def page3():
+    # indexからpage2への移動時に作成された検索結果のリストをsessionを使って呼び出す
     searched_list = session.get('result_items_list', None)
+
     print(searched_list[1])
     return render_template('page3.html', rst_info=searched_list)
 
+# page2での情報でOKだったときに、その店の詳細を表示させる=goal
 @app.route('/templates/goal', methods=["get"])
 def goal():
 
@@ -150,7 +140,7 @@ def goal():
     #↓OKが出た店の食べログURLでスクレイピング
     url_t = searched_list[0]['url']
     r = requests.get(url_t)
-    soup = BeautifulSoup(r.text)
+    soup = BeautifulSoup(r.text, 'html.parser')
     name_rst = soup.find('div', class_='rstinfo-table__name-wrap').text
     station_rst = soup.find('span', class_='linktree__parent-target-text').text
     tel_rst = soup.find('p', class_='rstdtl-side-yoyaku__tel-number').text
@@ -158,6 +148,7 @@ def goal():
     return render_template('goal.html', searched_list=searched_list, name_rst=name_rst, \
         station_rst=station_rst, tel_rst=tel_rst)
 
+# 情報2件が両方とも不適切だった場合、はじめに戻る=fail
 @app.route('/templates/fail', methods=["get"])
 def fail():
     return render_template('fail.html')

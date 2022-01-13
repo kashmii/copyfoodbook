@@ -2,16 +2,22 @@
 <html lang=en-JP>
     <head>
         <meta charset="utf-8">
-        <title>page2</title>
-        <meta name="discription" content="ページの概要をここに記入（SEO対策）">
-        <meta name="viewport" content="width=device-width"><!-- レスポンシブスマホ対応-->
-        <style>/*CSS挿入*/
-        *{margin:30;padding:0;}/*デフォルトでついている間隔を０にしてデザインしやすく*/
-        </style>
+        <title>fail</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" \
+        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" \
+        crossorigin="anonymous">
+
+        <link rel="stylesheet" type="text/css" \
+            href="{{ url_for('static',filename='css/index.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- レスポンシブスマホ対応-->
+
     </head>
     <body>
-        <h2>うまく見つけられませんでした、<br>検索ワードを変えてもう一度試してみてください(> <)</h2>
-        <a href='/'><button>はじめに戻る</button></a>
-        
+        <div class='outside'>
+        <h2>うまく見つけられませんでした...<br>検索ワードを変えてもう一度試してみてください(> <)</h2>
+        <a href='/'><button class='box_page23'>はじめに戻る</button></a>
+        </div>
     </body>
 </html>

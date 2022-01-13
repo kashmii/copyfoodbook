@@ -2,26 +2,34 @@
 <html lang=en-JP>
     <head>
         <meta charset="utf-8">
-        <title>page2</title>
-        <meta name="discription" content="ページの概要をここに記入（SEO対策）">
-        <meta name="viewport" content="width=device-width"><!-- レスポンシブスマホ対応-->
-        <style>/*CSS挿入*/
-        *{margin:30;padding:0;}/*デフォルトでついている間隔を０にしてデザインしやすく*/
-        </style>
-    </head>
-    <body>
-        <h1>こちらでよろしいでしょうか？</h1>
-        <p>{{ rst_info[0]['title'] }}</p>
-        <p>{{ rst_info[0]['detail'] }}</p>
-        <!-- <p>{{ rst_info[0]['url'] }}</p> -->
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" \
+        rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" \
+        crossorigin="anonymous">
 
-        <a href='/templates/goal'>
-            <button>ＯＫ</button>
-        </a>
-        <!-- <button formaction="/templates/goal" formmethod="get">ＯＫ</button> -->
-        <a href='/templates/page3'><button>次の結果</button></a>
-        <a href='/'><button>はじめに戻る</button></a>
-        <br>
-        
+        <link rel="stylesheet" type="text/css" \
+            href="{{ url_for('static',filename='css/index.css') }}">
+        <title>page2</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- レスポンシブスマホ対応-->
+
+    </head>
+    
+    <body>
+        <div class='outside'>
+            <h1>こちらでよろしいでしょうか？</h1>
+            <div class='explain_box'>
+            <p>{{ rst_info[0]['title'] }}</p>
+            <p>{{ rst_info[0]['detail'] }}</p>
+            <!-- <p>{{ rst_info[0]['url'] }}</p> -->
+            </div>
+            <div class='buttons'>
+            <a href='/templates/goal'>
+                <button class='box_page23'>ＯＫ</button>
+            </a>
+            <a href='/templates/page3'><button class='box_page23'>次の結果</button></a>
+            <a href='/'><button class='box_page23'>はじめに戻る</button></a>
+            </div>
+        </div>
     </body>
 </html>
