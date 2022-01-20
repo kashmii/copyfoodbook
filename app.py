@@ -2,6 +2,7 @@
 from bs4 import BeautifulSoup
 import re
 from flask import Flask, render_template, request, session
+import os
 import requests
 import settings
 from requests.exceptions import Timeout
@@ -14,6 +15,9 @@ app = Flask(__name__)
 
 # =================================
 # =================================
+headers_dic = {"User-Agent": \
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36"}
+
 # カスタム検索エンジンID
 CUSTOM_SEARCH_ENGINE_ID = "87dabc623cf5e8624"
 # API キー
@@ -75,7 +79,6 @@ class SearchResult:
         self.snippet = snippet
 
     def __str__(self):
-        # コマンドライン上での表示形式はご自由にどうぞ
         return "[title] " + self.title + "\n\t[detail] " + self.snippet + "\n\t[url]" + self.url
 
     def Making_d(self):
