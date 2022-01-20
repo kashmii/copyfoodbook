@@ -15,8 +15,8 @@ app = Flask(__name__)
 
 # =================================
 # =================================
-headers_dic = {"User-Agent": \
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36"}
+# headers_dic = {"User-Agent": \
+#     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36"}
 
 # カスタム検索エンジンID
 CUSTOM_SEARCH_ENGINE_ID = "87dabc623cf5e8624"
