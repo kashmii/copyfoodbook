@@ -12,13 +12,30 @@
         <title>index</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- レスポンシブスマホ対応-->
+        <script type="text/javascript"> 
+        
+            function check(){
+                var flag = 0;
+                // 設定開始（必須にする項目を設定してください）
+                if(document.form1.name.value == ""){ // 「レストランの名前」の入力をチェック
+                    flag = 1;
+                }
+                // 設定終了
+            
+                if(flag){
+                    window.alert('飲食店名を入力してください'); // 未入力なら警告ダイアログを表示
+                    return false; // 送信を中止
+                }
+                else{return true;} // 送信を実行
+                }
+        </script>
     </head>
     <body>
     <div class='container, outside'>
         <h1 id='title'>Copy Restaurant</h1>
 
         <div class=form_box>
-            <form action="/templates/page2" class=row method="post" enctype="multipart/form-data">
+            <form action="/templates/page2" onSubmit="return check()" class=row name=form1 method="post" enctype="multipart/form-data">
                 <input class='col-4, box' type="text" id='hoge' name="name" placeholder="レストランの名前"></input>
                 <select class='col-4, box' name="prefectures">
                 <option value="" selected>お店の都道府県</option>
@@ -84,5 +101,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     </body>
+
+    
 
 </html>

@@ -24,6 +24,7 @@
             <p>TEL：{{tel_rst}}</p>
             <p>GoogleMap：</p>
             <p>食べログ：{{searched_list[0]['url']}}</p>
+            <p>=============</p>
         </div>
         
         <!-- <div class='explain_box'>
@@ -33,7 +34,7 @@
                 TEL：{{tel_rst}}<br>
                 GoogleMap：<br>
                 食べログ：{{searched_list[0]['url']}}</p>
-            <p>=============</p>
+            
         </div> -->
 
         <button id="copy-btn" class='box_page23'>Copy text</button>
@@ -49,7 +50,8 @@
 	            navigator.clipboard.writeText(copy_text2).then(function () {
 		            // コピーに成功した場合の処理
 		            document.querySelector('#output').textContent = 'copied it to the clipboard';
-	                });
+	            });
+                alert('クリップボードにコピーしました。');
             });
         </script>
         

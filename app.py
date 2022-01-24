@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
-import re
 from flask import Flask, render_template, request, session
 import os
+# <re>正規表現のモジュール
+import re
 import requests
 import settings
 from requests.exceptions import Timeout
@@ -18,6 +19,7 @@ app = Flask(__name__)
 # headers_dic = {"User-Agent": \
 #     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36"}
 
+# ※以下4行、Google検索の際に使うIDとAPI−KEY※
 # カスタム検索エンジンID
 CUSTOM_SEARCH_ENGINE_ID = "87dabc623cf5e8624"
 # API キー
@@ -32,7 +34,7 @@ def get_search_results(query):
         "v1", 
         developerKey = API_KEY
     )
-    
+
     # Google Custom Search から結果を取得
     result = search.cse().list(
         q = query,
@@ -45,7 +47,7 @@ def get_search_results(query):
     # 受け取ったjsonをそのまま返却
     return result
 
-# 検索結果の情報をSearchResultに格納してリストで返す
+# 検索結果の情報をSearchResultに格納してリストで返す(indexからpage2へ飛ぶときに使用)
 def summarize_search_results(result):
 
     # 結果のjsonから検索結果の部分を取り出しておく
@@ -78,16 +80,20 @@ class SearchResult:
         self.url = url
         self.snippet = snippet
 
-    def __str__(self):
-        return "[title] " + self.title + "\n\t[detail] " + self.snippet + "\n\t[url]" + self.url
+    # もともと使用していたが使わなくなった
+    # def __str__(self):
+    #     return "[title] " + self.title + "\n\t[detail] " + self.snippet + "\n\t[url]" + self.url
 
+    # page2での確認画面に表示する店名・詳細、その後使用するURLを
+    # 辞書形式で返すメソッド
     def Making_d(self):
         d_info = dict(title=self.title, url=self.url, detail=self.snippet)
         return d_info
 
-# htmlとやり取りするパート
+# *** htmlとやり取りするパート ***
 app = Flask(__name__)
 
+# これがないと動かないらしい(原因忘れた)
 app.secret_key = 'abcdefghijklmn'
 
 @app.route('/', methods=['GET'])
@@ -95,9 +101,9 @@ def get():
     return render_template('index.html')
 
 # 今は未使用
-@app.route('/templates/fail', methods=["get"])
-def page2():
-    return render_template('fail.html')
+# @app.route('/templates/fail', methods=["get"])
+# def page2():
+#     return render_template('fail.html')
 
 # フォームを読み込んで検索結果を出す ＝page2
 @app.route('/templates/page2', methods=['POST'])
@@ -113,9 +119,9 @@ def post():
     result = get_search_results(the_word)
     # result には 返却されたjsonが入る
 
-    # 検索結果情報からタイトル, URL, スニペット, 検索結果の順位を抽出してまとめる
+    # 検索結果情報からタイトル, URL, detailを抽出してまとめる
     result_items_list = summarize_search_results(result) 
-    # result_items_list には SearchResult のリストが入る
+    # result_items_list には Making_d()で作成した辞書が5つ入ったリストが入る
 
     # 他のページへ渡せるようにsessionを使う
     session['result_items_list'] = result_items_list
@@ -144,9 +150,18 @@ def goal():
     url_t = searched_list[0]['url']
     r = requests.get(url_t)
     soup = BeautifulSoup(r.text, 'html.parser')
-    name_rst = soup.find('div', class_='rstinfo-table__name-wrap').text
-    station_rst = soup.find('span', class_='linktree__parent-target-text').text
-    tel_rst = soup.find('p', class_='rstdtl-side-yoyaku__tel-number').text
+    # 食べログ店舗のページをスクレイピングする前提のため、それ以外のページだとエラーになる
+    # 以下3行のクラスに該当するものがなかったら「お店のページでなかったため失敗しました…」と表示させたい
+    try:
+        name_rst = soup.find('div', class_='rstinfo-table__name-wrap').text
+        station_rst = soup.find('span', class_='linktree__parent-target-text').text
+        tel_rst = soup.find('p', class_='rstdtl-side-yoyaku__tel-number').text
+    except AttributeError:
+        name_rst = ''
+        station_rst = ''
+        tel_rst = ''
+        return render_template('fail.html', searched_list=searched_list, name_rst=name_rst, \
+        station_rst=station_rst, tel_rst=tel_rst)
 
     return render_template('goal.html', searched_list=searched_list, name_rst=name_rst, \
         station_rst=station_rst, tel_rst=tel_rst)
